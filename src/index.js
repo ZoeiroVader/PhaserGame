@@ -4,7 +4,7 @@ var config = {
         type: Phaser.AUTO,
         scale: {
             mode: Phaser.Scale.NONE,
-            _parent: 'phaser-example',
+            _parent: 'WOW',
             autoCenter: Phaser.Scale.CENTER_BOTH,
             width: 800,
             height: 600
@@ -26,7 +26,7 @@ var config = {
     var game = new Phaser.Game(config);
     var img;
     var img2;
-    var vel = 100;
+    var vel = 300;
     var scoreText;
     var score = 0;
     var tam = 0.1;
@@ -39,8 +39,8 @@ var config = {
 
     function create ()
     {     
-    
-    
+    //tem q ser um cursor pequeno para funcionar
+    //this.input.setDefaultCursor('url(assets/RedSword.png), pointer');
 
     var sprite = this.add.sprite(0, 0, 'pic').setOrigin(0).setInteractive();
 
@@ -61,10 +61,6 @@ var config = {
         
 
     }, this);
-
-    img.on('pointerover', function(pointer){
-        this.setScale(2)
-    })
 
     sprite.on('pointerdown', function (pointer) {
 
