@@ -10,6 +10,13 @@ var score = 0;
 var gameOver = false;
 var scoreText;
 var keys;
+var fadeCamera;
+var flashCamera;
+var shakeCamera;
+var camerasAdded = [];
+var camerasRemoved = [];
+var adding = false;
+var scene;
 
 var Preloader = new Phaser.Class({
 
@@ -87,7 +94,6 @@ var MainMenu = new Phaser.Class({
 
         var btn = this.add.image(400, 300, 'play');
 
-
         btn.setInteractive();
 
         btn.once('pointerup', function () {
@@ -119,7 +125,7 @@ var Game = new Phaser.Class({
     {
         console.log('%c Game ', 'background: green; color: white; display: block;');
 
-        keys = this.input.keyboard.addKeys('A')   
+        keys = this.input.keyboard.addKeys('A,W,S,D,Q')   
         this.add.image(400, 350, 'back')
 
         cursors = this.input.keyboard.createCursorKeys();
@@ -132,6 +138,7 @@ var Game = new Phaser.Class({
 
         enemy = this.physics.add.sprite(100, 200, 'enemy').setScale(1.4)
         enemy.setCollideWorldBounds(true)
+        enemy.setBounce(0.2)
 
         this.physics.add.collider(player, enemy)
 
@@ -145,9 +152,31 @@ var Game = new Phaser.Class({
 
     update: function ()
     {
+        // 
+        
+        
+        
         if (keys.A.isDown) {
-            
+            enemy.setVelocityX(-300);
+            enemy.anims.play('enemy_idle', true)
+        }else if (keys.D.isDown) {
+            enemy.setVelocityX(300);
+            enemy.anims.play('enemy_idle', true)
+        }else{
+            enemy.setVelocityX(0)
         }
+
+        if (keys.W.isDown) {
+            enemy.setVelocityY(-300)
+        }else if (keys.S.isDown) {
+            enemy.setVelocityY(300)
+        }
+
+        if (keys.Q.isDown) {
+            this.cameras.main.flash(100);
+            this.cameras.main.shake(100);
+        }
+
         if (cursors.left.isDown)
         {   
             //define a velocidade do player no eixo X
@@ -163,21 +192,19 @@ var Game = new Phaser.Class({
         else{
             player.setVelocityX(0)       
             player.anims.play('turn')
-
-            enemy.anims.play('enemy_idle')
         }
         //se a seta para cima e estiver tocando o chão/algo
         if (cursors.up.isDown)
         {
             //aplica a velocidade no eixo y, ou seja um pulo
             player.setVelocityY(-500);
-        } 
-
-        if (cursors.down.isDown)
+        }else if (cursors.down.isDown)
         {
             //aplica a velocidade no eixo y, ou seja um pulo
             player.setVelocityY(500);
-        } 
+        }
+
+         
     }
 
 });
@@ -200,7 +227,7 @@ var GameOver = new Phaser.Class({
 
         this.add.sprite(400, 300, 'zero2');
 
-        this.add.text(300, 500, 'Game Over - Click to start restart', { font: '16px Courier', fill: '#00ff00' });
+        this.add.text(300, 500, 'Game Over - Click to start restart', { font: '16px comic-sans', fill: '#00ff00' });
 
         this.input.once('pointerup', function (event) {
 
