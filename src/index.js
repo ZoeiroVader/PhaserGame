@@ -36,10 +36,14 @@ var Preloader = new Phaser.Class({
         this.load.image('back', 'assets/back.png')
         this.load.image('zero2', 'assets/zero2.png')
         this.load.image('play', 'assets/playnow.png')
+        this.load.image('star', 'assets/star.png')
+        this.load.image('heart', 'assets/heart.png')
     },
 
     create: function ()
     {
+        
+
         console.log('%c Preloader ', 'background: green; color: white; display: block;');
         this.anims.create({
             //nome da animação = 'left'
@@ -147,6 +151,25 @@ var Game = new Phaser.Class({
             this.scene.start('gameover');
 
         }, this);
+
+        var particles = this.add.particles('star');
+
+        var emitter = particles.createEmitter({
+            speed: 50,
+            scale: { start: .5, end: 0 },
+            blendMode: 'SCREEN'
+        }); 
+        emitter.startFollow(player);
+
+        var particles2 = this.add.particles('heart');
+
+        var emitter2 = particles2.createEmitter({
+            speed: 50,
+            scale: { start: .5, end: 0 },
+            blendMode: 'ADD'
+        }); 
+
+        emitter2.startFollow(enemy);
 
     },
 
